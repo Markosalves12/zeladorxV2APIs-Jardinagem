@@ -5,7 +5,6 @@ from utils.views import generic_view, edit_generic_view, gerneric_alter_status
 from permissionscontrol.utils import validate_permissions
 from empresasecundario.utils import define_empresas
 from areas.models_jardinagem import AreasJardins
-from areas.forms_jardinagem import AreasJardinsForms
 from django.shortcuts import redirect
 from django.contrib import messages
 

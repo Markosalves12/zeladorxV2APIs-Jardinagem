@@ -58,8 +58,8 @@ class AreaLimpezaPredial(models.Model):
         default='Mobilizado'
     )
 
-    class Meta:
-        unique_together = ('nome', 'localidade')
+    # class Meta:
+    #     unique_together = ('nome', 'localidade')
 
 
     def save(self, *args, **kwargs):

@@ -100,8 +100,8 @@ class AreasJardins(models.Model):
 
         super(AreasJardins, self).save(*args, **kwargs)
 
-    class Meta:
-        unique_together = ('nome', 'vegetacao', 'Terreno')
+    # class Meta:
+    #     unique_together = ('nome', 'vegetacao', 'Terreno')
 
     def __str__(self):
         return f'{self.nome} | {self.localidade}'

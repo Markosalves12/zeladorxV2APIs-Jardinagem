@@ -60,14 +60,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'areas.apps.AreasConfig',
-    'banco_de_imagens.apps.BancoDeImagensConfig',
     'catalogo_de_servicos.apps.CatalogoDeServicosConfig',
     'dashboards.apps.DashboardsConfig',
     'empresaprimaria.apps.EmpresaprimariaConfig',
     'empresasecundario.apps.EmpresasecundarioConfig',
     'gerente.apps.GerenteConfig',
     'localidade.apps.LocalidadeConfig',
-    'notifications.apps.NotificationsConfig',
     'relatorios.apps.RelatoriosConfig',
     'terrenos.apps.TerrenosConfig',
     'unidade.apps.UnidadeConfig',
@@ -79,20 +77,25 @@ INSTALLED_APPS = [
     'semana.apps.SemanaConfig',
     'authenticate.apps.AuthenticateConfig',
     'permissionscontrol.apps.PermissionscontrolConfig',
-    'history.apps.HistoryConfig',
     'zeladorx.apps.ZeladorxConfig',
-    'background_task',
-    'kanban.apps.KanbanConfig',
-    # 'chats.apps.ChatsConfig',
     'checklists.apps.ChecklistsConfig',
     'medidor.apps.MedidorConfig',
-    'gantt.apps.GanttConfig',
-    'mapas.apps.MapasConfig',
     'retornos.apps.RetornosConfig',
     'storages',
     'rest_framework',
     'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 30,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -217,7 +220,7 @@ STORAGES = {
 GS_PROJECT_ID = "bucketzeladorx"
 
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, "bucketzeladorx.json")
+    os.path.join(BASE_DIR, "bucketzeladorx-047b955782da.json")
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

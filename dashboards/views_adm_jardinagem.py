@@ -3,8 +3,6 @@ from areas.models_jardinagem import AreasJardins
 from empresasecundario.utils import define_empresas
 from permissionscontrol.utils import verify_login, validate_permissions
 from utils.utils import aplicar_filtros_dinamicos
-from areas.forms_jardinagem import AreasJardinsForms
-from areas.utils_jardinagem import graphs_jardinagem_to_html, data_visualization_jardinagem_indicadores
 
 def dashboard_administrativo_jardinagem(request, userid):
     block = verify_login(request=request, userid=userid)

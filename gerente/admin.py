@@ -10,7 +10,7 @@ class GerenteAdmin(admin.ModelAdmin):
     ordering = ('email',)
     filter_horizontal = ()  # Removido uso de 'groups' e 'user_permissions'
     fieldsets = (
-        (None, {'fields': ('email', 'username', 'password')}),
+        (None, {'fields': ('email', 'username', )}),
         ('Status e empresa', {'fields': ('status', 'empresasecundaria')}),
         ('Permissões', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
     )

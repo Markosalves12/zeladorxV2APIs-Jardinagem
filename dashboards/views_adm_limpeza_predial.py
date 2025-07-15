@@ -3,8 +3,6 @@ from areas.models_limpeza_predial import AreaLimpezaPredial
 from empresasecundario.utils import define_empresas
 from permissionscontrol.utils import verify_login, validate_permissions
 from utils.utils import aplicar_filtros_dinamicos
-from areas.forms_limpeza_predial import AreasLimpezaPredialForms
-from areas.utils_limpeza_predial import graphs_limpeza_predial_to_html, data_visualization_limpeza_predial_indicadores
 
 # Create your views here.
 def dashboard_administrativo_limpeza_predial(request, userid):

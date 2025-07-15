@@ -3,7 +3,6 @@ from authenticate.forms import LoginForms, EmailReset, UpdatePassword
 from gerente.models import Gerente
 from django.contrib import messages
 from django.contrib import auth
-from notifications.utils import enviar_notificacao
 from django.utils.crypto import get_random_string
 from django.utils.timezone import now
 from datetime import timedelta, datetime
