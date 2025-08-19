@@ -36,8 +36,8 @@ class Terreno(models.Model):
         default='Mobilizado'
     )
 
-    class Meta:
-        unique_together = ('nome', 'EmpresaSecundaria')
+    # class Meta:
+    #     unique_together = ('nome', 'EmpresaSecundaria')
 
     def __str__(self):
         return self.nome

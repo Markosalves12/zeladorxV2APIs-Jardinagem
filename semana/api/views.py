@@ -8,7 +8,6 @@ from semana.models import DiasDaSemana
 
 
 # Response: https://gist.github.com/mitchtabian/ae03573737067c9269701ea662460205
-# Url: https://<your-domain>/api/blog/list
 # Headers: Authorization: Token <token>
 class ListDiasDaSemana(ListAPIView):
     serializer_class = DiasDaSemanaSerializer

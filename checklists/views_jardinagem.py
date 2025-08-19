@@ -8,12 +8,6 @@ from servicos.models_jardinagem import ServicoJardinagemAgendado
 
 
 # Create your views here.
-
-"""('400: Pode criar novos checklists', '400: Pode criar novos checklists'),
-('401: Pode editar checklists', '401: Pode editar checklists'),
-('402: Pode visualizar checklists', '402: Pode visualizar checklists'),
-('403: Pode excluir checklists', '403: Pode excluir checklists'),"""
-
 def checklists_jardinagem(request, userid, id_random):
     empresas = define_empresas(request=request, userid=userid)
     empresas_primarias_ids = empresas['empresas_primarias_ids']

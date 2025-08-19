@@ -253,3 +253,7 @@ class FatoServicoJardinagem(models.Model):
         on_delete=models.CASCADE,
         related_name='RColaboradorFatoServico'
     )
+
+
+    def __str__(self):
+        return f'{self.Servico} | {self.data_hora_chegada_na_area} | {self.Gerente}'

@@ -4,4 +4,4 @@ from empresasecundario.models import EmpresaSecundaria
 class EmpresaSecundariaSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmpresaSecundaria
-        fields = ['id_random', 'nome', 'setor', 'empresaprimaria', 'status', ]
+        fields = ['id', 'id_random', 'nome', 'setor', 'empresaprimaria', 'status', ]

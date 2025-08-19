@@ -4,27 +4,28 @@ from servicos.models_jardinagem import ServicoJardinagemAgendado, ServicoJardina
 class ServicoJardinagemAgendadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServicoJardinagemAgendado
-        fields = ['id_random', 'Areas', 'TipoServico', 'DescricaoDoServico', 'ServicosEscalados', 'DataDeInicio',
+        fields = ['id', 'id_random', 'Areas', 'TipoServico', 'DescricaoDoServico', 'ServicosEscalados', 'DataDeInicio',
                   'DataDeConclusao', 'ColaboradoresEscalados', 'foto_solicitacao', 'foto_entrega',]
 
 
 class ServicoJardinagemConfiguradoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServicoJardinagemConfigurado
-        fields = ['id_random', 'Areas', 'ServicosEscalados', 'tempomedioplanejado', 'diasaseremrealizado','horario_1',
+        fields = ['id', 'id_random', 'Areas', 'ServicosEscalados', 'tempomedioplanejado', 'diasaseremrealizado','horario_1',
                   'horario_2', 'horario_3', 'horario_4', 'horario_5',
-                  'horario_6', 'horario_7', 'status']
+                  'horario_6', 'horario_7', 'status', ]
 
 
 class FatoServicoJardinagemSerializer(serializers.ModelSerializer):
     class Meta:
         model = FatoServicoJardinagem
-        fields = ['id_random', 'Servico', 'data_hora_chegada_na_area', 'data_hora_retorno_area', 'Gerente']
+        fields = ['id', 'id_random', 'Servico', 'data_hora_chegada_na_area', 'data_hora_retorno_area', 'Gerente', ]
 
 
 
 
 class ServicoJardinagemAgendadoAnnotatedSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     id_random = serializers.CharField()
     DescricaoDoServico = serializers.CharField()
     DataDeInicio = serializers.DateTimeField()
@@ -35,7 +36,6 @@ class ServicoJardinagemAgendadoAnnotatedSerializer(serializers.Serializer):
     ColaboradoresEscalados = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     foto_solicitacao = serializers.ImageField(allow_null=True, required=False)
     foto_entrega = serializers.ImageField(allow_null=True, required=False)
-
     # Campos anotados
     dias_diferenca = serializers.IntegerField()
     novo_status = serializers.CharField()

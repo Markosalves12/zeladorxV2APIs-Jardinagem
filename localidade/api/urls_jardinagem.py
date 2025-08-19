@@ -1,11 +1,17 @@
 from django.urls import path
-from localidade.api.views_jardinagem import (ListLocalidadeJardins, LocalidadeJardinsDetail, LocalidadeJardinsUpdate,
-                                             LocalidadeJardinsAlterStatus)
+from localidade.api.views_jardinagem import (ListLocalidadeJardinagem, LocalidadeJardinagemDetail, LocalidadeJardinagemUpdate,
+                                             LocalidadeJardinagemAlterStatus, CreateLocalidadeJardinagem,
+                                             IfDeleteLocalidadeJardinagem, ListLocalidadeJardinagemFromForms,
+                                             DeleteLocalidadeJardinagem)
 
 
 urlpatterns = [
-    path('ListLocalidadeJardins/', ListLocalidadeJardins.as_view(), name="ListLocalidadeJardins"),
-    path('LocalidadeJardinsDetail/<str:id_random>/', LocalidadeJardinsDetail, name="LocalidadeJardinsDetail"),
-    path('LocalidadeJardinsUpdate/<str:id_random>/', LocalidadeJardinsUpdate, name="LocalidadeJardinsUpdate"),
-    path('LocalidadeJardinsAlterStatus/<str:id_random>/', LocalidadeJardinsAlterStatus, name="LocalidadeJardinsAlterStatus"),
+    path('ListLocalidadeJardinagem/', ListLocalidadeJardinagem.as_view(), name="ListLocalidadeJardinagem"),
+    path('ListLocalidadeJardinagemFromForms/', ListLocalidadeJardinagemFromForms.as_view(), name="ListLocalidadeJardinagemFromForms"),
+    path('LocalidadeJardinagemDetail/<str:id_random>/', LocalidadeJardinagemDetail, name="LocalidadeJardinagemDetail"),
+    path('LocalidadeJardinagemUpdate/<str:id_random>/', LocalidadeJardinagemUpdate, name="LocalidadeJardinagemUpdate"),
+    path('LocalidadeJardinagemAlterStatus/<str:id_random>/', LocalidadeJardinagemAlterStatus, name="LocalidadeJardinagemAlterStatus"),
+    path('CreateLocalidadeJardinagem/', CreateLocalidadeJardinagem, name="CreateLocalidadeJardinagem"),
+    path('IfDeleteLocalidadeJardinagem/<str:id_random>/', IfDeleteLocalidadeJardinagem, name="IfDeleteLocalidadeJardinagem"),
+    path('DeleteLocalidadeJardinagem/<str:id_random>/', DeleteLocalidadeJardinagem, name="DeleteLocalidadeJardinagem"),
 ]

@@ -5,10 +5,10 @@ from permissionscontrol.models import PermissionsLimpezaPredial, PermissionsAcce
 class PermissionsLimpezaPredialSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermissionsLimpezaPredial
-        fields = ['id_random', 'Permissions', ]
+        fields = ['id', 'id_random', 'Permissions', ]
 
 
 class PermissionsAccessLimpezaPredialSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermissionsAccessLimpezaPredial
-        fields = ['id_random', 'Gerente', 'Permissions', ]
+        fields = ['id', 'id_random', 'Gerente', 'Permissions', ]

@@ -4,4 +4,4 @@ from catalogo_de_servicos.models_limpeza_predial import CatalogodeServicoLimpeza
 class CatalogodeServicoLimpezaPredialSerializer(serializers.ModelSerializer):
     class Meta:
         model = CatalogodeServicoLimpezaPredial
-        fields = ['id_random', 'nome', 'EmpresaSecundaria', 'status']
+        fields = ['id', 'id_random', 'nome', 'EmpresaSecundaria', 'status']

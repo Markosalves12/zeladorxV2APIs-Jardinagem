@@ -225,3 +225,6 @@ class FatoServicoLimpezaPredial(models.Model):
             self.foto_entrega = resize_image(self.foto_entrega, max_width=500)
 
         super(FatoServicoLimpezaPredial, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.Servico} | {self.data_hora_chegada_na_area} | {self.Gerente}'

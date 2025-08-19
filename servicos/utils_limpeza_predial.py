@@ -242,7 +242,7 @@ def query_servicos_limpeza_predial_agendados_anotados(request, userid, status_li
         Areas__localidade__unidade__empresasecundaria__empresaprimaria__id_random__in=empresas_primarias_ids,
         Areas__localidade__unidade__empresasecundaria__id_random__in=empresas_secundarias_ids,
         status__in=status_list
-    ).annotate(
+    ).distinct().annotate(
         dias_diferenca=ExtractDay(F('DataDeInicio') - timezone.now()),
         novo_status=Case(
             When(status='Em andamento', then=Value('Em andamento')),

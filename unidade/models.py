@@ -14,7 +14,7 @@ class Unidade(models.Model):
         blank=False,
         null=False,
         max_length=100,
-        unique=True
+        # unique=True
     )
 
     linkmapajardinagem = models.CharField(

@@ -1,16 +1,55 @@
-from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from localidade.api.serializers_jardinagem import LocalidadeJardiangemSerializer
 from localidade.models_Jardinagem import LocalidadeJardiangem
-from permissionscontrol.utils import validate_permissions
-from utils.views import GenericDetailView, GenericUpdateView, GenericFilteredListView
+from utils.views import (GenericDetailView, GenericUpdateView, GenericFilteredListView, GenericCreateView,
+                         GenericAlterStatusView, GenericIfDeleteView, GenericDeleteView)
+from empresasecundario.utils import define_empresas
+from unidade.models import Unidade
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def CreateLocalidadeJardinagem(request):
+    empresas = define_empresas(request=request, userid=request.user.id_random)
+    empresas_primarias_ids = empresas['empresas_primarias_ids']
+    empresas_secundarias_ids = empresas['empresas_secundarias_ids']
+
+    foreign_key_validations = [
+        {
+            "coluna": "unidade",
+            "model": Unidade,
+            "filters": {
+                "empresasecundaria__empresaprimaria__id_random__in": empresas_primarias_ids,
+                "empresasecundaria__id_random__in": empresas_secundarias_ids,
+                "empresasecundaria__status__in": ["Mobilizado",],
+                "status__in": ['Mobilizado'],
+            },
+            "error_message": "A unidade selecionada está desmobilizada ou não pertence às empresas que você gerencia."
+        },
+    ]
+
+    return GenericCreateView(
+        request=request,
+        model_class=LocalidadeJardiangem,
+        serializer_class=LocalidadeJardiangemSerializer,
+        permission_type="jardinagem",
+        permission_to_access=['290: Pode criar novas localidades'],
+        forbidden_message="Você não tem permissão para criar localidades de jardinagem.",
+        foreign_key_validations=foreign_key_validations,
+        public_endpoint=False
+    )
+
+
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def LocalidadeJardinsDetail(request, id_random):
+def LocalidadeJardinagemDetail(request, id_random):
+    empresas = define_empresas(request=request, userid=request.user.id_random)
+    empresas_primarias_ids = empresas['empresas_primarias_ids']
+    empresas_secundarias_ids = empresas['empresas_secundarias_ids']
+
     return GenericDetailView(
         request=request,
         model=LocalidadeJardiangem,
@@ -18,7 +57,11 @@ def LocalidadeJardinsDetail(request, id_random):
         filters={"id_random": id_random},
         permission_type="jardinagem",
         permission_to_access=["292: Pode visualizar localidades"],
-        forbidden_message="Você não tem permissão para visualizar localidades de jardinagem."
+        forbidden_message="Você não tem permissão para visualizar localidades de jardinagem.",
+        access_filters={
+            "unidade__empresasecundaria__empresaprimaria__id_random__in": empresas_primarias_ids,
+            "unidade__empresasecundaria__id_random__in": empresas_secundarias_ids,
+        }
     )
 
 
@@ -26,7 +69,11 @@ def LocalidadeJardinsDetail(request, id_random):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def LocalidadeJardinsUpdate(request, id_random):
+def LocalidadeJardinagemUpdate(request, id_random):
+    empresas = define_empresas(request=request, userid=request.user.id_random)
+    empresas_primarias_ids = empresas['empresas_primarias_ids']
+    empresas_secundarias_ids = empresas['empresas_secundarias_ids']
+
     return GenericUpdateView(
         request=request,
         model=LocalidadeJardiangem,
@@ -35,107 +82,112 @@ def LocalidadeJardinsUpdate(request, id_random):
         permission_type="jardinagem",
         permission_to_access=["291: Pode editar localidades"],
         forbidden_message="Você não tem permissão para editar localidades de jardinagem.",
-        not_found_message="Localidade de jardinagem não encontrada."
+        not_found_message="Localidade de jardinagem não encontrada.",
+        access_filters={
+            "unidade__empresasecundaria__empresaprimaria__id_random__in": empresas_primarias_ids,
+            "unidade__empresasecundaria__id_random__in": empresas_secundarias_ids,
+        },
+        public_endpoint=False,
     )
-
 
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def LocalidadeJardinsAlterStatus(request, id_random):
-    userid = request.user.id_random
+def LocalidadeJardinagemAlterStatus(request, id_random):
+    empresas = define_empresas(request=request, userid=request.user.id_random)
+    empresas_primarias_ids = empresas["empresas_primarias_ids"]
+    empresas_secundarias_ids = empresas["empresas_secundarias_ids"]
 
-    try:
-        localidade = LocalidadeJardiangem.objects.get(id_random=id_random)
-    except LocalidadeJardiangem.DoesNotExist:
-        return Response(
-            {"detail": "Localidade de jardinagem não encontrada."},
-            status=status.HTTP_404_NOT_FOUND
-        )
-
-    allowed_fields = {'status'}
-    received_fields = set(request.data.keys())
-
-    if not received_fields:
-        return Response(
-            {"detail": "O campo 'status' é obrigatório."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    extra_fields = received_fields - allowed_fields
-    if extra_fields:
-        return Response(
-            {
-                "detail": "Apenas o campo 'status' pode ser alterado nesta rota.",
-                "campos_recebidos": list(received_fields)
-            },
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    new_status = request.data.get('status')
-
-    if new_status not in ['Mobilizado', 'Desmobilizado']:
-        return Response(
-            {"detail": "Valor de status inválido. Use 'Mobilizado' ou 'Desmobilizado'."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
-    if new_status == 'Desmobilizado':
-        permission_desmobilize = validate_permissions(
-            request=request,
-            userid=userid,
-            permission_type='jardinagem',
-            permission_to_access=['295: Pode reabilitar localidades']
-        )
-        if not permission_desmobilize:
-            return Response(
-                {"detail": "Você não tem permissão para desmobilizar esta localidade."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
-    elif new_status == 'Mobilizado':
-        permission_rehabilitate = validate_permissions(
-            request=request,
-            userid=userid,
-            permission_type='jardinagem',
-            permission_to_access=['285: Pode reabilitar colaboradores']
-        )
-        if not permission_rehabilitate:
-            return Response(
-                {"detail": "Você não tem permissão para reabilitar esta localidade."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
-    localidade.status = new_status
-    localidade.save()
-
-    return Response(
-        {
-            "success": True,
-            "message": f"Status da localidade atualizado para '{new_status}'.",
-            "data": {
-                "id_random": localidade.id_random,
-                "status": localidade.status
-            }
+    return GenericAlterStatusView(
+        request=request,
+        model=LocalidadeJardiangem,
+        filters={"id_random": id_random},
+        permission_type="jardinagem",
+        desmobilize_permission='294: Pode desmobilizar localidades',
+        rehabilitate_permission='295: Pode reabilitar localidades',
+        not_found_message="localidade de jardinagem não encontrada.",
+        success_message="Status da localidade de jardinagem atualizado com sucesso.",
+        access_filters={
+            "unidade__empresasecundaria__empresaprimaria__id_random__in": empresas_primarias_ids,
+            "unidade__empresasecundaria__id_random__in": empresas_secundarias_ids,
         },
-        status=status.HTTP_200_OK
+        public_endpoint=False
     )
 
 
-
-
-
-# Response: https://gist.github.com/mitchtabian/ae03573737067c9269701ea662460205
-# Url: https://<your-domain>/api/blog/list
 # Headers: Authorization: Token <token>
-class ListLocalidadeJardins(GenericFilteredListView):
+class ListLocalidadeJardinagem(GenericFilteredListView):
     model_class = LocalidadeJardiangem
     serializer_class = LocalidadeJardiangemSerializer
     permission_type = 'jardinagem'
     permission_code = '292: Pode visualizar localidades'
-    search_fields = ('id_random', 'nome', 'lat_med', 'long_med', 'unidade', 'status')
+    search_fields = ('id', 'id_random', 'nome', 'lat_med', 'long_med', 'unidade', 'status',)
     empresa_filter_paths = (
         'unidade__empresasecundaria__empresaprimaria__id_random',
         'unidade__empresasecundaria__id_random',
     )
+    forbidden_message = "Você não tem permissão para visualizar localidades de jardinagem."
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def IfDeleteLocalidadeJardinagem(request, id_random):
+    empresas = define_empresas(request=request, userid=request.user.id_random)
+    empresas_primarias_ids = empresas["empresas_primarias_ids"]
+    empresas_secundarias_ids = empresas["empresas_secundarias_ids"]
+
+    return GenericIfDeleteView(
+        request,
+        model=LocalidadeJardiangem,
+        id_random=id_random,
+        permission_type='jardinagem',
+        permission_to_access=['293: Pode excluir localidades'],
+        access_filters={
+            "unidade__empresasecundaria__empresaprimaria__id_random__in": empresas_primarias_ids,
+            "unidade__empresasecundaria__id_random__in": empresas_secundarias_ids,
+        },
+        forbidden_message="Você não tem permissão para excluir esta localidade de jardinagem."
+    )
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def DeleteLocalidadeJardinagem(request, id_random):
+    empresas = define_empresas(request=request, userid=request.user.id_random)
+    empresas_primarias_ids = empresas["empresas_primarias_ids"]
+    empresas_secundarias_ids = empresas["empresas_secundarias_ids"]
+
+    return GenericDeleteView(
+        request,
+        model=LocalidadeJardiangem,
+        id_random=id_random,
+        permission_type='jardinagem',
+        permission_to_access=['293: Pode excluir localidades'],
+        access_filters={
+            "unidade__empresasecundaria__empresaprimaria__id_random__in": empresas_primarias_ids,
+            "unidade__empresasecundaria__id_random__in": empresas_secundarias_ids,
+        },
+        forbidden_message="Você não tem permissão para excluir esta localidade de jardinagem."
+    )
+
+class ListLocalidadeJardinagemFromForms(GenericFilteredListView):
+    model_class = LocalidadeJardiangem
+    serializer_class = LocalidadeJardiangemSerializer
+    permission_type = 'jardinagem'
+    permission_code = '292: Pode visualizar localidades'
+    search_fields = ('id', 'id_random', 'nome', 'lat_med', 'long_med', 'unidade', 'status',)
+    empresa_filter_paths = (
+        'unidade__empresasecundaria__empresaprimaria__id_random',
+        'unidade__empresasecundaria__id_random',
+    )
+    forbidden_message = "Você não tem permissão para visualizar localidades de jardinagem."
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(
+            unidade__empresasecundaria__status__in=["Mobilizado", ],
+            status__in=['Mobilizado'],
+            unidade__status__in=["Mobilizado", ],
+        )

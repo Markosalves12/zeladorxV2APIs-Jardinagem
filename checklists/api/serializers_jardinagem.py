@@ -4,4 +4,4 @@ from checklists.models import CheckListJardinagem
 class CheckListJardinagemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckListJardinagem
-        fields = ['id_random', 'servico_agendado', 'descricao', 'foto_comprovacao', 'status',]
+        fields = ['id', 'id_random', 'servico_agendado', 'descricao', 'foto_comprovacao', 'status',]

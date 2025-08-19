@@ -1,15 +1,29 @@
 from django.urls import path
-from servicos.api.views_limpeza_predial import (ListServicoLimpezaPredialAgendado, ListFatoLimpezaPredial,
-                                           ListServicoLimpezaPredialConfigurado)
+from servicos.api.views_limpeza_predial import (CreateServicosLimpezaPredial, ServicosLimpezaPredialDetail,
+                                                ServicosLimpezaPredailUpdate, IfDeleteServicoAgendadoLimpezaPredial,
+                                                ListServicoLimpezaPredialAgendadoAnotados,
+                                                alterar_status_servico_limpeza_predial, DeleteServicoAgendadoLimpezaPredial)
 
 
 urlpatterns = [
-    path('ListServicoLimpezaPredialAgendado/', ListServicoLimpezaPredialAgendado.as_view(),
-         name="ListServicoLimpezaPredialAgendado"),
+    path('ListServicoLimpezaPredialAgendadoAnotados/', ListServicoLimpezaPredialAgendadoAnotados.as_view(),
+         name="ListServicoLimpezaPredialAgendadoAnotados"),
 
-    path('ListFatoLimpezaPredial/', ListFatoLimpezaPredial.as_view(),
-         name="ListFatoLimpezaPredial"),
+    path('CreateServicosLimpezaPredial/', CreateServicosLimpezaPredial,
+         name="CreateServicosLimpezaPredial"),
 
-    path('ListServicoLimpezaPredialConfigurado/', ListServicoLimpezaPredialConfigurado.as_view(),
-         name="ListServicoJardinagemConfigurado"),
+    path('ServicosLimpezaPredialDetail/<str:id_random>/', ServicosLimpezaPredialDetail,
+         name="ServicosLimpezaPredialDetail"),
+
+    path('ServicosLimpezaPredailUpdate/<str:id_random>/', ServicosLimpezaPredailUpdate,
+         name="ServicosLimpezaPredailUpdate"),
+
+    path('IfDeleteServicoAgendadoLimpezaPredial/<str:id_random>/', IfDeleteServicoAgendadoLimpezaPredial,
+         name="IfDeleteServicoAgendadoLimpezaPredial"),
+
+    path('AlterStatusServicoLimpezaPredial/<str:id_random>/', alterar_status_servico_limpeza_predial,
+         name="AlterStatusServicoLimpezaPredial"),
+
+    path('DeleteServicoAgendadoLimpezaPredial/<str:id_random>/', DeleteServicoAgendadoLimpezaPredial,
+         name="DeleteServicoAgendadoLimpezaPredial"),
  ]

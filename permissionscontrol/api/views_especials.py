@@ -100,9 +100,6 @@ def PermissionsAccessEspecialsUpdate(request, id_random):
     )
 
 
-# Response: https://gist.github.com/mitchtabian/ae03573737067c9269701ea662460205
-# Url: https://<your-domain>/api/blog/list
-# Headers: Authorization: Token <token>
 class ListPermissionsEspecials(ListAPIView):
     serializer_class = PermissionsEspecialsSerializer
     authentication_classes = (TokenAuthentication,)
@@ -113,6 +110,10 @@ class ListPermissionsEspecials(ListAPIView):
 
     def get_queryset(self):
         return PermissionsEspecials.objects.all()
+
+    # Desativa paginação forçada pelo settings.py
+    def paginate_queryset(self, queryset):
+        return None
 
 
 class ListPermissionsAccessEspecials(ListAPIView):

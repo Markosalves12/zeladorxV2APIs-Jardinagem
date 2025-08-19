@@ -4,10 +4,10 @@ from permissionscontrol.models import PermissionsJardinagem, PermissionsAccessJa
 class PermissionsJardinagemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermissionsJardinagem
-        fields = ['id_random', 'Permissions', ]
+        fields = ['id', 'id_random', 'Permissions', ]
 
 
 class PermissionsAccessJardinagemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PermissionsAccessJardinagem
-        fields = ['id_random', 'Gerente', 'Permissions', ]
+        fields = ['id', 'id_random', 'Gerente', 'Permissions', ]

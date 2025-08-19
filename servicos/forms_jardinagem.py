@@ -104,7 +104,8 @@ class ServicoJaridinagemAgendadoForms(forms.ModelForm):
 
     class Meta:
         model = ServicoJardinagemAgendado
-        fields = ['Areas', 'TipoServico', 'DescricaoDoServico', 'ServicosEscalados', 'DataDeInicio', 'DataDeConclusao', 'ColaboradoresEscalados',
+        fields = ['Areas', 'TipoServico', 'DescricaoDoServico', 'ServicosEscalados', 'DataDeInicio', 'DataDeConclusao',
+                  'ColaboradoresEscalados',
                   'foto_solicitacao', 'foto_entrega',]
 
         labels = {
