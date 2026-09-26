@@ -96,6 +96,18 @@ class PermissionsJardinagem(models.Model):
          '410: Pode editar o recebimento de notificações gerais'),
         ('411: Pode editar o recebimento de notificações individuais',
          '411: Pode editar o recebimento de notificações individuais'),
+
+        ('420: Pode criar QR codes', '420: Pode criar QR codes'),
+        ('421: Pode editar QR codes', '421: Pode editar QR codes'),
+        ('422: Pode visualizar QR codes', '422: Pode visualizar QR codes'),
+        ('423: Pode excluir QR codes', '423: Pode excluir QR codes'),
+        ('424: Pode desmobilizar QR codes', '424: Pode desmobilizar QR codes'),
+        ('425: Pode reabilitar QR codes', '425: Pode reabilitar QR codes'),
+
+        ('431: Pode editar solicitacoes', '431: Pode editar solicitacoes'),
+        ('432: Pode visualizar solicitacoes', '432: Pode visualizar solicitacoes'),
+        ('433: Pode excluir solicitacoes', '433: Pode excluir solicitacoes'),
+        ('434: Pode Rejeitar/aceitar solicitacoes', '434: Pode Rejeitar/aceitar solicitacoes'),
     ]
 
     Permissions = models.CharField(
@@ -210,6 +222,18 @@ class PermissionsLimpezaPredial(models.Model):
          '410: Pode editar o recebimento de notificações gerais'),
         ('411: Pode editar o recebimento de notificações individuais',
          '411: Pode editar o recebimento de notificações individuais'),
+
+        ('420: Pode criar QR codes', '420: Pode criar QR codes'),
+        ('421: Pode editar QR codes', '421: Pode editar QR codes'),
+        ('422: Pode visualizar QR codes', '422: Pode visualizar QR codes'),
+        ('423: Pode excluir QR codes', '423: Pode excluir QR codes'),
+        ('424: Pode desmobilizar QR codes', '424: Pode desmobilizar QR codes'),
+        ('425: Pode reabilitar QR codes', '425: Pode reabilitar QR codes'),
+
+        ('431: Pode editar solicitacoes', '431: Pode editar solicitacoes'),
+        ('432: Pode visualizar solicitacoes', '432: Pode visualizar solicitacoes'),
+        ('433: Pode excluir solicitacoes', '433: Pode excluir solicitacoes'),
+        ('434: Pode Rejeitar/aceitar solicitacoes', '434: Pode Rejeitar/aceitar solicitacoes'),
     ]
 
     Permissions = models.CharField(

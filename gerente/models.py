@@ -5,6 +5,7 @@ from empresasecundario.models import EmpresaSecundaria
 from notifications.utils import enviar_notificacao
 from utils.utils import generate_id_random
 
+
 class GerenteManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
         if not email:
@@ -95,7 +96,7 @@ class Gerente(AbstractBaseUser):
     objects = GerenteManager()
 
     def __str__(self):
-        return self.username
+        return self.username + " | " + self.email
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
