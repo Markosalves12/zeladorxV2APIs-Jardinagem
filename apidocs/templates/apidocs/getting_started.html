@@ -1,0 +1,60 @@
+{% extends 'apidocs/base.html' %}
+
+{% block title %}Primeiros passos{% endblock %}
+{% block breadcrumb %}<a href="{% url 'apidocs:home' %}">Início</a><i class="fa-solid fa-chevron-right"></i><span>Primeiros passos</span>{% endblock %}
+
+{% block content %}
+<div class="dx-page-head">
+    <span class="dx-page-icon dx-tone-blue"><i class="fa-solid fa-rocket"></i></span>
+    <div>
+        <h1>Primeiros passos</h1>
+        <p>Todas as rotas usam autenticação por token. Faça login uma vez e reutilize o token nas próximas chamadas.</p>
+    </div>
+</div>
+
+<div class="dx-doc">
+    <article class="dx-block">
+        <h3>1. Login</h3>
+        <p>O login usa os campos <code>username</code> e <code>password</code>. O <code>username</code> é o e-mail do usuário.</p>
+        <div class="dx-endpoint"><span class="dx-method dx-method-post">POST</span><code>/api/login</code></div>
+        <pre class="dx-code"><code>import requests
+
+body = {
+    "username": "seu.email@empresa.com.br",
+    "password": "SUA_SENHA",
+}
+
+response = requests.post("{BASE_URL}/api/login", body)
+response.json()
+
+# {
+#     'token': 'SEU_TOKEN',          # token de acesso
+#     'id_random': '6uW6BnjPFHyd',   # id randômico único
+#     'user_id': 1,                  # chave primária
+#     'username': 'zeladorx',
+#     'email': 'zeladorx@zeladorx.com.br',
+#     'is_superuser': True,          # superusuário do ecossistema contratado
+# }</code></pre>
+    </article>
+
+    <article class="dx-block">
+        <h3>2. Envie o token</h3>
+        <p>Todas as rotas precisam do token no cabeçalho <code>Authorization</code>.</p>
+        <pre class="dx-code"><code>headers = {
+    "Authorization": f"Token {response.json()['token']}"
+}
+
+response = requests.get("{BASE_URL}/api/areas/ListAreasJardinagem/", headers=headers)</code></pre>
+    </article>
+
+    <article class="dx-block">
+        <h3>3. Regras gerais</h3>
+        <ul>
+            <li>Cada rota exige um código de permissão do usuário (veja <strong>Códigos de permissão</strong> em cada plataforma).</li>
+            <li>Os registros são identificados pelo <code>id_random</code>, nunca pelo id numérico.</li>
+            <li>As listas são paginadas com 15 itens por página (<code>?page=2</code>).</li>
+            <li>Antes de excluir, consulte a rota <code>IfDelete...</code> para saber se o registro pode ser removido.</li>
+        </ul>
+    </article>
+</div>
+{% endblock %}

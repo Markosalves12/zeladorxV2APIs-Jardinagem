@@ -94,6 +94,9 @@ INSTALLED_APPS = [
     'medidor.apps.MedidorConfig',
     'retornos.apps.RetornosConfig',
 
+    # Portal de documentação das APIs (sem models / sem migrações)
+    'apidocs.apps.ApidocsConfig',
+
     'rest_framework',
     'rest_framework.authtoken',
 

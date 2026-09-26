@@ -1,0 +1,45 @@
+{% extends 'apidocs/base.html' %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+<section class="dx-hero">
+    <div>
+        <span class="dx-eyebrow"><i class="fa-solid fa-code"></i> ZeladorX Developers</span>
+        <h1>APIs de zeladoria, jardinagem e limpeza predial</h1>
+        <p>As mesmas regras de negócio do ZeladorX, prontas para integrar com seus sistemas. Escolha uma plataforma, veja as rotas e copie os exemplos.</p>
+        <div class="dx-hero-actions">
+            <a class="dx-btn dx-btn-primary" href="{% url 'apidocs:getting_started' %}"><i class="fa-solid fa-rocket"></i> Primeiros passos</a>
+            <a class="dx-btn dx-btn-soft" href="{% url 'apidocs:platform' 'jardinagem' %}"><i class="fa-solid fa-seedling"></i> Ver Jardinagem</a>
+        </div>
+    </div>
+    <div class="dx-stats">
+        <div class="dx-stat dx-tone-blue"><strong>{{ stats.platforms }}</strong><span>Plataformas</span></div>
+        <div class="dx-stat dx-tone-green"><strong>{{ stats.sections }}</strong><span>Seções</span></div>
+        <div class="dx-stat dx-tone-yellow"><strong>{{ stats.endpoints }}</strong><span>Rotas documentadas</span></div>
+    </div>
+</section>
+
+<h2 class="dx-title">Plataformas</h2>
+<div class="dx-cards">
+    {% for p in platforms %}
+    <a class="dx-card dx-platform-card dx-platform-{{ p.slug }}" href="{% url 'apidocs:platform' p.slug %}">
+        <span class="dx-card-icon"><i class="fa-solid {{ p.icon }}"></i></span>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.description }}</p>
+        <div class="dx-chips">
+            {% for s in p.sections|slice:":5" %}<span class="dx-chip">{{ s.title }}</span>{% endfor %}
+            {% if p.sections|length > 5 %}<span class="dx-chip dx-chip-muted">+{{ p.sections|length|add:"-5" }}</span>{% endif %}
+        </div>
+        <span class="dx-card-link">Abrir documentação <i class="fa-solid fa-arrow-right"></i></span>
+    </a>
+    {% endfor %}
+</div>
+
+<h2 class="dx-title">Como funciona</h2>
+<div class="dx-steps">
+    <div class="dx-step"><span>1</span><h4>Faça login</h4><p>Envie <code>username</code> (e-mail) e <code>password</code> para <code>POST /api/login</code>.</p></div>
+    <div class="dx-step"><span>2</span><h4>Use o token</h4><p>Envie o cabeçalho <code>Authorization: Token &lt;seu token&gt;</code> em todas as chamadas.</p></div>
+    <div class="dx-step"><span>3</span><h4>Respeite as permissões</h4><p>Cada rota exige um código de permissão do usuário, igual ao app principal.</p></div>
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}APIs ZeladorX{% endblock %} · ZeladorX Developers</title>
+    <meta name="description" content="{% block description %}Documentação das APIs de Jardinagem, Limpeza predial e Especiais do ZeladorX.{% endblock %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'apidocs/docs.css' %}?v=1">
+</head>
+<body>
+<div class="dx-shell">
+
+    <!-- ===================== MENU LATERAL ===================== -->
+    <aside class="dx-sidebar" id="dxSidebar">
+        <a class="dx-brand" href="{% url 'apidocs:home' %}">
+            <span class="dx-brand-mark">Z</span>
+            <span>
+                <strong>ZeladorX</strong>
+                <small>APIs · Developers</small>
+            </span>
+        </a>
+
+        <label class="dx-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" id="dxSearch" placeholder="Buscar seção ou rota" autocomplete="off">
+        </label>
+
+        <nav class="dx-nav">
+            <a class="dx-nav-link {% if current == 'home' %}is-active{% endif %}" href="{% url 'apidocs:home' %}">
+                <i class="fa-solid fa-house"></i><span>Início</span>
+            </a>
+            <a class="dx-nav-link {% if current == 'getting-started' %}is-active{% endif %}" href="{% url 'apidocs:getting_started' %}">
+                <i class="fa-solid fa-rocket"></i><span>Primeiros passos</span>
+            </a>
+
+            {% for p in platforms %}
+            <div class="dx-group {% if current == p.slug %}is-open{% endif %}" data-group="{{ p.slug }}">
+                <button type="button" class="dx-group-toggle">
+                    <i class="fa-solid {{ p.icon }}"></i>
+                    <span>{{ p.title }}</span>
+                    <em>{{ p.sections|length }}</em>
+                    <i class="fa-solid fa-chevron-down dx-chevron"></i>
+                </button>
+                <div class="dx-group-items">
+                    <a class="dx-sub-link {% if current == p.slug and not current_section %}is-active{% endif %}" href="{% url 'apidocs:platform' p.slug %}">
+                        <i class="fa-solid fa-layer-group"></i><span>Visão geral</span>
+                    </a>
+                    {% for s in p.sections %}
+                    <a class="dx-sub-link {% if current == p.slug and current_section == s.slug %}is-active{% endif %}"
+                       href="{% url 'apidocs:section' p.slug s.slug %}"
+                       data-search="{{ s.title|lower }} {% for e in s.endpoints %}{{ e.path|lower }} {% endfor %}">
+                        <i class="fa-solid {{ s.icon }}"></i><span>{{ s.title }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </nav>
+
+        <div class="dx-sidebar-foot">
+            <a href="https://github.com/Markosalves12/DocsAPIZeladorX" target="_blank" rel="noopener">
+                <i class="fa-regular fa-file-pdf"></i> Manuais em PDF
+            </a>
+        </div>
+    </aside>
+    <div class="dx-backdrop" id="dxBackdrop"></div>
+
+    <!-- ===================== ÁREA CENTRAL ===================== -->
+    <div class="dx-main">
+        <header class="dx-topbar">
+            <button type="button" class="dx-icon-btn dx-menu-btn" id="dxMenuBtn" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="dx-breadcrumb">{% block breadcrumb %}<span>Início</span>{% endblock %}</div>
+            <div class="dx-topbar-actions">
+                <span class="dx-base-url" title="Endereço base usado nos exemplos">
+                    <i class="fa-solid fa-server"></i> <span data-base-url></span>
+                </span>
+                <a class="dx-btn dx-btn-soft" href="{% url 'apidocs:getting_started' %}">
+                    <i class="fa-solid fa-key"></i> Obter token
+                </a>
+            </div>
+        </header>
+
+        <main class="dx-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="dx-footer">
+            ZeladorX · Plataforma de APIs · Jardinagem, Limpeza predial e Especiais
+        </footer>
+    </div>
+</div>
+
+<script src="{% static 'apidocs/docs.js' %}?v=1"></script>
+</body>
+</html>

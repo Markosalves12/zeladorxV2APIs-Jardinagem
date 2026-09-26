@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('zeladorxadministration/', admin.site.urls),
+
+    # Portal de documentação (telas para o usuário)
+    path('', include('apidocs.urls')),
+
     path('api/', include('authenticate.api.urls')),
 
     path('api/unidades/', include('unidade.api.urls')),

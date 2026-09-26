@@ -1,0 +1,46 @@
+{% extends 'apidocs/base.html' %}
+
+{% block title %}{{ section.title }} · {{ platform.title }}{% endblock %}
+{% block breadcrumb %}<a href="{% url 'apidocs:home' %}">Início</a><i class="fa-solid fa-chevron-right"></i><a href="{% url 'apidocs:platform' platform.slug %}">{{ platform.title }}</a><i class="fa-solid fa-chevron-right"></i><span>{{ section.title }}</span>{% endblock %}
+
+{% block content %}
+<div class="dx-page-head">
+    <span class="dx-page-icon dx-platform-{{ platform.slug }}"><i class="fa-solid {{ section.icon }}"></i></span>
+    <div>
+        <span class="dx-eyebrow">{{ platform.title }}</span>
+        <h1>{{ section.title }}</h1>
+    </div>
+</div>
+
+<div class="dx-section-layout">
+    <div class="dx-doc">
+        {% for block in section.blocks %}
+            {% if block.type == 'text' %}
+                <div class="dx-text">{{ block.html|safe }}</div>
+            {% else %}
+                <div class="dx-block dx-code-block">
+                    {% for e in block.endpoints %}
+                    <div class="dx-endpoint"><span class="dx-method dx-method-{{ e.method|lower }}">{{ e.method }}</span><code>{{ e.path }}</code></div>
+                    {% endfor %}
+                    <pre class="dx-code"><code>{{ block.code }}</code></pre>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <nav class="dx-pager">
+            {% if previous %}<a href="{% url 'apidocs:section' platform.slug previous.slug %}"><small>Anterior</small><span><i class="fa-solid fa-arrow-left"></i> {{ previous.title }}</span></a>{% else %}<span></span>{% endif %}
+            {% if next %}<a class="dx-pager-next" href="{% url 'apidocs:section' platform.slug next.slug %}"><small>Próxima</small><span>{{ next.title }} <i class="fa-solid fa-arrow-right"></i></span></a>{% endif %}
+        </nav>
+    </div>
+
+    <aside class="dx-toc">
+        <h4>Rotas desta seção</h4>
+        {% for e in section.endpoints %}
+        <div class="dx-toc-item"><span class="dx-method dx-method-{{ e.method|lower }}">{{ e.method }}</span><code>{{ e.path }}</code></div>
+        {% empty %}
+        <p class="dx-muted">Nenhuma rota encontrada.</p>
+        {% endfor %}
+        <a class="dx-toc-source" href="{{ section.source }}" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Ver caderno original</a>
+    </aside>
+</div>
+{% endblock %}
