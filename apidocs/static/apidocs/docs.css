@@ -51,7 +51,7 @@ h1, h2, h3, h4 { font-family: var(--dx-font-title); margin: 0; letter-spacing: -
 .dx-shell { display: grid; grid-template-columns: var(--dx-sidebar-width) 1fr; min-height: 100vh; }
 .dx-backdrop { display: none; }
 .dx-main { display: flex; flex-direction: column; min-width: 0; }
-.dx-content { flex: 1; padding: 28px 36px 48px; max-width: 1280px; width: 100%; }
+.dx-content { flex: 1; padding: 28px 36px 48px; width: 100%; max-width: none; }
 
 /* ===================== MENU LATERAL ===================== */
 
@@ -157,8 +157,8 @@ h1, h2, h3, h4 { font-family: var(--dx-font-title); margin: 0; letter-spacing: -
 
 .dx-title { font-size: 19px; margin: 34px 0 14px; }
 
-.dx-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-.dx-cards-sm { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.dx-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.dx-cards-sm { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 .dx-card {
     display: flex; flex-direction: column; gap: 10px;
     background: var(--dx-surface); border: 1px solid var(--dx-border); border-radius: var(--dx-radius-lg);
@@ -195,7 +195,7 @@ h1, h2, h3, h4 { font-family: var(--dx-font-title); margin: 0; letter-spacing: -
 .dx-page-icon { width: 52px; height: 52px; flex: none; border-radius: 14px; display: grid; place-items: center; font-size: 22px; background: var(--dx-tone-soft, var(--dx-soft)); color: var(--dx-tone, var(--dx-primary)); }
 .dx-push { margin-left: auto; }
 
-.dx-section-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+.dx-section-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 360px); gap: 24px; align-items: start; }
 
 .dx-doc { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .dx-text h3 { font-size: 18px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--dx-border); }
